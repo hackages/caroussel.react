@@ -34,5 +34,3 @@ You'll have to play with the props and the and the local state
 If you reached this point, congratulations!
 
 See the state in the TeslaBatteryComponent? If you go on Tesla's website, you can grab real data and plug them into your app!
-
-Too easy for you? Use Redux to manage the state of your app :)
