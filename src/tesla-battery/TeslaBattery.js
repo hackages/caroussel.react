@@ -46,10 +46,25 @@ export class TeslaBattery extends Component {
     this.setState({temperature: {...this.state.temperature, focused: true}});
   };
 
-  incrementSpeed = () => {};
-  incrementTemperature = () => {};
+  incrementSpeed = () => {
+    const {
+      speed: {value, max, step}
+    } = this.state;
+    if (value < max) this.setState({speed: {...this.state.speed, value: value + step}});
+  };
+  incrementTemperature = () => {
+    const {
+      temperature: {value, max, step}
+    } = this.state;
+    if (value < max) this.setState({temperature: {...this.state.temperature, value: value + step}});
+  };
 
-  decrementSpeed = () => {};
+  decrementSpeed = () => {
+    const {
+      speed: {value, min, step}
+    } = this.state;
+    if (value > min) this.setState({speed: {...this.state.speed, value: value - step}});
+  };
   decrementTemperature = () => {
     const {temperature} = this.state;
     if (temperature.value > temperature.min) {
@@ -59,7 +74,9 @@ export class TeslaBattery extends Component {
     }
   };
 
-  changeClimate = () => {};
+  changeClimate = () => {
+    this.setState(state => ({climate: {...this.state.climate, value: !state.climate.value}}));
+  };
   onBlurClimate = () => {
     this.setState({climate: {...this.state.climate, focused: false}});
   };
@@ -91,11 +108,11 @@ export class TeslaBattery extends Component {
         <h1>{title}</h1>
 
         {/* TeslaCarComponent */}
-        <TeslaCar wheels={wheels} speed="speed.value" />
+        <TeslaCar wheels={wheels.value} speed={speed.value} />
         {/* End TeslaCarComponent */}
 
         {/* TeslaStatsComponent */}
-        <div class="tesla-stats">
+        <div className="tesla-stats">
           <ul>
             {/* This is working well in the first place you won't have to touch it */}
             {models
@@ -110,9 +127,11 @@ export class TeslaBattery extends Component {
                 };
               })
               .map(stat => (
-                <li>
+                <li key={stat.model}>
                   {/* the stat.model here under must be lowercased */}
-                  <div className={`tesla-stats-icon tesla-stats-icon--${stat.model}`} />
+                  <div
+                    className={`tesla-stats-icon tesla-stats-icon--${stat.model.toLowerCase()}`}
+                  />
                   <p>
                     {stat.miles}
                     <span>MI</span>
@@ -123,7 +142,7 @@ export class TeslaBattery extends Component {
         </div>
         {/* End TeslaStatsComponent */}
 
-        <div class="tesla-controls cf">
+        <div className="tesla-controls cf">
           {/* TeslaCounterComponent for speed */}
           <div className="tesla-counter">
             <p className="tesla-counter__title">Speed</p>
@@ -131,25 +150,25 @@ export class TeslaBattery extends Component {
               <div
                 className="tesla-counter__item"
                 tabIndex="0"
-                blur={'this.onBlurSpeed'}
+                onBlur={this.onBlurSpeed}
                 onFocus={this.onFocusSpeed}
               >
                 <p className="tesla-counter__number">
-                  speed.value
+                  {speed.value}
                   <span>mph</span>
                 </p>
                 <div className="tesla-counter__controls" tabIndex="-1">
                   <button
                     tabIndex="-1"
                     type="button"
-                    onClick="this.incrementSpeed"
-                    disabled="speed.value === speed.max"
+                    onClick={this.incrementSpeed}
+                    disabled={speed.value === speed.max}
                   />
                   <button
                     tabIndex="-1"
                     type="button"
-                    onclick={this.decrementSpeed()}
-                    disabled="speed.value === speed.min"
+                    onClick={this.decrementSpeed}
+                    disabled={speed.value === speed.min}
                   />
                 </div>
               </div>
@@ -204,7 +223,7 @@ export class TeslaBattery extends Component {
                 <input
                   type="checkbox"
                   name="climate"
-                  checked={climate.value}
+                  defaultChecked={climate.value}
                   onClick={this.changeClimate}
                   onBlur={this.onBlurClimate}
                   onFocus={this.onFocusClimate}
