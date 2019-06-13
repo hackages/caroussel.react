@@ -1,103 +1,96 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import teslaService from "./tesla-battery.service";
 import {TeslaCar} from "./components/TeslaCar";
 
-export class TeslaBattery extends Component {
-  state = {
-    title: 'Ranger Per Charge',
-    models: ['60', '60D', '75', '75D', '90D', 'P100D'],
-    wheels: {
-      sizes: [19, 21],
-      value: 19,
-      focused: null,
-    },
-    climate: {
-      value: true,
-      focused: false,
-    },
-    temperature: {
-      value: 20,
-      focused: false,
-      min: -10,
-      max: 40,
-      step: 10,
-    },
-    speed: {
-      value: 55,
-      focused: false,
-      min: 45,
-      max: 70,
-      step: 5,
-    },
-    metrics: {}
+const TITLE = 'Range per charge'
+const MODELS = ['60', '60D', '75', '75D', '90D', 'P100D'];
+export const TeslaBattery = () => {
+  const [wheels, setWheels] = useState({
+    sizes: [19, 21],
+    value: 19,
+    focused: null
+  })
+  const [climate, setClimate] = useState({
+    value: true,
+    focused: false,
+  })
+  const [temperature, setTemperature] = useState({
+    value: 20,
+    focused: false,
+    min: -10,
+    max: 40,
+    step: 10,
+  })
+  const [speed, setSpeed] = useState({
+    value: 55,
+    focused: false,
+    min: 45,
+    max: 70,
+    step: 5,
+  })
+  const [metrics, setMetrics] = useState({})
+
+  const onBlurSpeed = () => {
+    setSpeed({...speed, focused: false})
+  }
+  const onBlurTemperature = () => {
+    setTemperature({...temperature, focused: false})
   }
 
-  onBlurSpeed = () => {
-    this.setState({speed: {...this.state.speed, focused: false}})
+  const onFocusSpeed = () => {
+    setSpeed({...speed, focused: true})
   }
-  onBlurTemperature = () => {
-    this.setState({temperature: {...this.state.temperature, focused: false}})
-  }
-
-  onFocusSpeed = () => {
-    this.setState({speed: {...this.state.speed, focused: true}})
-  }
-  onFocusTemperature = () => {
-    this.setState({temperature: {...this.state.temperature, focused: true}})
+  const onFocusTemperature = () => {
+    setTemperature({...temperature, focused: true})
   }
 
-  incrementSpeed = () => {
+  const incrementSpeed = () => {
 
   }
-  incrementTemperature = () => {
+  const incrementTemperature = () => {
 
   }
 
-  decrementSpeed = () => {
+  const decrementSpeed = () => {
 
   }
-  decrementTemperature = () => {
-    const {temperature} = this.state
+  const decrementTemperature = () => {
     if (temperature.value > temperature.min) {
-      this.setState({temperature: {...this.state.temperature, value: temperature.value - temperature.step}})
+      setTemperature({...temperature, value: temperature.value - temperature.step})
     }
   }
 
-  changeClimate = () => {
+  const changeClimate = () => {
 
   }
-  onBlurClimate = () => {
-    this.setState({climate: {...this.state.climate, focused: false}})
+  const onBlurClimate = () => {
+    setClimate({...climate, focused: false})
   }
-  onFocusClimate = () => {
-    this.setState({climate: {...this.state.climate, focused: true}})
-
-  }
-
-
-  onBlurWheels = () => {
-    this.setState({wheels: {...this.state.wheels, focused: null}})
-  }
-  changeWheelSize = (size) => {
-    this.setState({wheels : {...this.state.wheels, value: size}})
-  }
-  onFocusWheels = (size) => {
-    this.setState({wheels: {...this.state.wheels, focused: size}})
+  const onFocusClimate = () => {
+    setClimate({...climate, focused: true})
   }
 
 
-  componentDidMount(){
-    this.setState({metrics: teslaService.getModelData()})
+  const onBlurWheels = () => {
+    setWheels({...wheels, focused: null})
+  }
+  const changeWheelSize = (size) => {
+    setWheels({...wheels, value: size})
+  }
+  const onFocusWheels = (size) => {
+    setWheels({...wheels, focused: size})
   }
 
-  render() {
-    const {title, wheels, speed, models, metrics, climate, temperature} = this.state
+  useEffect(() => {
+    setMetrics(teslaService.getModelData())
+  }, [])
+
     if(!metrics["60"]){
       return null
     }
     return (
       <form className="tesla-battery">
-        <h1>{title}</h1>
+        <h1>{TITLE}</h1>
 
         {/* TeslaCarComponent */}
         <TeslaCar wheels={wheels}
@@ -237,6 +230,6 @@ export class TeslaBattery extends Component {
         </div>
       </form>
     )
-  }
+
 }
 
