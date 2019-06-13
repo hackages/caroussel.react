@@ -127,8 +127,8 @@ export const TeslaBattery = () => {
             <p className="tesla-counter__title">Speed</p>
             <div className="tesla-counter__container cf">
               <div className="tesla-counter__item" tabIndex="0"
-                   blur={"this.onBlurSpeed"}
-                   @Focus={this.onFocusSpeed}>
+                   blur={"onBlurSpeed"}
+                   @Focus={onFocusSpeed}>
                 <p className="tesla-counter__number">
                   speed.value
                   <span>mph</span>
@@ -137,11 +137,11 @@ export const TeslaBattery = () => {
                      tabIndex="-1">
                   <button tabIndex="-1"
                           type="button"
-                          {(click)}="this.incrementSpeed"
+                          {(click)}="incrementSpeed"
                           disabled="speed.value === speed.max"/>
                   <button tabIndex="-1"
                           type="button"
-                          onclick={this.decrementSpeed()}
+                          onclick={decrementSpeed()}
                           disabled="speed.value === speed.min"/>
                 </div>
               </div>
@@ -156,8 +156,8 @@ export const TeslaBattery = () => {
               <div className="tesla-counter__container cf">
                 <div className="tesla-counter__item"
                      tabIndex="0"
-                     onBlur={() => this.onBlurTemperature}
-                     onFocus={this.onFocusTemperature()}>
+                     onBlur={() => onBlurTemperature}
+                     onFocus={onFocusTemperature()}>
                   <p className="tesla-counter__number">
                     {{temperature.value}}
                     <span>°</span>
@@ -166,11 +166,11 @@ export const TeslaBattery = () => {
                        tabIndex="-1">
                     <button tabIndex="-1"
                             type="button"
-                            onClick={this.incrementTemperature}
+                            onClick={incrementTemperature}
                             disabled={temperature.value === temperature.max}/>
                     <button tabIndex="-1"
                             type="button"
-                            onClick={this.decrementTemperature}
+                            onClick={decrementTemperature}
                             disabled={temperature.value === temperature.min}/>
                   </div>
                 </div>
@@ -186,9 +186,9 @@ export const TeslaBattery = () => {
                 <input type="checkbox"
                        name="climate"
                        checked={climate.value}
-                       onClick={this.changeClimate}
-                       onBlur={this.onBlurClimate}
-                       onFocus={this.onFocusClimate}/>
+                       onClick={changeClimate}
+                       onBlur={onBlurClimate}
+                       onFocus={onFocusClimate}/>
               </label>
             </div>
             {/* End TeslaClimateComponent */}
@@ -205,9 +205,9 @@ export const TeslaBattery = () => {
                   <input type="radio"
                          name="wheelsize"
                          value={size}
-                         onBlur={this.onBlurWheels}
-                         onClick={() => this.changeWheelSize(size)}
-                         onFocus={() => this.onFocusWheels(size)}
+                         onBlur={onBlurWheels}
+                         onClick={() => changeWheelSize(size)}
+                         onFocus={() => onFocusWheels(size)}
                          defaultChecked={wheels.value === size}/>
                   <p>
                     {size}"
